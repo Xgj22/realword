@@ -1,0 +1,99 @@
+{{ extend './layout/layout.html'}}
+
+{{ block 'body'}}
+<div class="auth-page" id="login">
+    <div class="container page">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 col-xs-12">
+          <h1 class="text-xs-center">{{isLogin?'Sign in':'Sign up'}}</h1>
+          <p class="text-xs-center">
+            <a href="">Have an account?</a>
+          </p>
+          
+          <!-- {{ if errors}}
+          <ul class="error-messages">
+            {{ each errors }}
+            <li>{{ $value }}</li>
+            {{ /each }}
+          </ul>
+          {{ /if }} -->
+
+          <ul class="error-messages" v-if="this.errors">
+            <li v-for="(err,index) in errors" :key="index">
+                {% err.msg %}
+            </li>
+          </ul>
+
+          
+          <!-- 
+            传统 web 应用中表单提交有两种方式
+             同步提交
+                application/x-www-form-urlencoded
+                后端处理重新渲染比较低效
+             异步提交（随着 Ajax 的诞生大量使用）
+                Vue.js (渐进式框架) 可以当作一个库来使用
+           -->
+           <!-- 提交会将所有拥有 name 的元素提交 -->
+          <!-- <form action="/register" method="post"> -->
+        <form @submit.prevent="handleSumbit">
+            {{if isLogin!==true}}
+            <fieldset class="form-group">
+                <input class="form-control form-control-lg" type="text" placeholder="Your Name" name="userName" v-model="user.username"/>
+            </fieldset>
+            {{/if}}
+            
+            <fieldset class="form-group">
+              <input class="form-control form-control-lg" type="text" placeholder="Email" name="email" v-model="user.email"/>
+            </fieldset>
+            <fieldset class="form-group">
+              <input class="form-control form-control-lg" type="password" placeholder="Password" name="password" v-model="user.password"/>
+            </fieldset>
+            <button class="btn btn-lg btn-primary pull-xs-right">{{isLogin?'Sign in':'Sign up'}}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{{ /block}}
+
+{{ block 'script' }}
+<script>
+// <!-- 匿名函数避免出错前面要加一个分号 -->
+// 匿名函数自调用
+;(() => {
+    const app = new Vue({
+        el:'#login',
+        data() {
+            return {
+                user:{
+                    username:'',
+                    email:'',
+                    password:''
+                },
+                errors:[]
+            }
+        },
+        methods: {
+            async handleSumbit(){
+                // 1.客户端表单验证
+                // 2.验证通过，提交表单
+                try {
+                    const { data } = await axios.post('/register',{
+                        user:this.user
+                    })
+                    // 跳转到首页
+                    this.errors = []
+                    
+                    // 清除错误信息
+                    window.location.href = '/'
+                } catch (error) {
+                    if(error.response.status===400){
+                        this.errors = error.response.data.errors
+                    }
+                }
+            }
+        },
+    })
+})()
+</script>
+{{ /block }}

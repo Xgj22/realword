@@ -1,0 +1,33 @@
+
+<nav class="navbar navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">conduit</a>
+    <ul class="nav navbar-nav pull-xs-right">
+        {{ if sessionUser }}
+        <li class="nav-item">
+        <!-- Add "active" class when you're on that page" -->
+            <a class="nav-link active" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/editor"> <i class="ion-compose"></i>&nbsp;New Article </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/setting"> <i class="ion-gear-a"></i>&nbsp;Settings </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile/xgj">
+                <img src={{ sessionUser.image || "/public/images/01.jpg" }} alt="" class="user-pic">
+                {{ sessionUser.username }}
+            </a>
+        </li>
+        {{ else }}
+        <li class="nav-item">
+            <a class="nav-link" href="/login">Sign in</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/register">Sign up</a>
+        </li>
+        {{ /if }}
+    </ul>
+    </div>
+</nav>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Conduit</title>
+    <!-- Import Ionicon icons & Google Fonts our Bootstrap theme relies on -->
+    <link
+      href="/node_modules/ionicons/css/ionicons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="//fonts.googleapis.com/css?family=Titillium+Web:700|Source+Serif+Pro:400,700|Merriweather+Sans:400,700|Source+Sans+Pro:400,300,600,700,300italic,400italic,600italic,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Import the custom Bootstrap 4 theme from our hosted CDN -->
+    <link rel="stylesheet" href="/public/css/main.css" />
+    {{ block 'head'}}
+    <!-- 自定义style -->
+    {{ /block }}
+  </head>
+  <body>
+    {{ include './header.html'}}
+
+    {{ block 'body'}}
+    <div> 这是默认内容 </div>
+    {{ /block }}
+
+    {{ include './footer.html'}}
+
+    <!--  公共的 javaScript 脚本-->
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <!-- 引入axios -->
+    <script src="/node_modules/axios/dist/axios.js"></script>
+    <script>
+        Vue.mixin({
+            delimiters:['{%','%}']
+        })
+    </script>
+    {{ block 'script' }}
+    {{ /block }}
+  </body>
+  
+  
+</html>
